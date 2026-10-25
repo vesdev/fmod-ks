@@ -20,7 +20,6 @@ const check = (result :: Result, fn_name :: &str) => (
 
 const System = @opaque_type "FMOD_STUDIO_SYSTEM*";
 
-
 impl System as module = (
 	module:
 
@@ -55,12 +54,14 @@ impl System as module = (
     	);
 	);
 
-	const run = (max_channels :: Int32, f :: System -> ()) => (
-		let system = System._create();
-		System._initialize(system, max_channels);
-
-		f(system);
-		
-		System._release(system);	
-	);
 );
+
+const run = (max_channels :: Int32, f :: System -> ()) => (
+	let system = System._create();
+	System._initialize(system, max_channels);
+
+	f(system);
+	
+	System._release(system);	
+);
+
