@@ -56,6 +56,32 @@ impl System as module = (
 
 );
 
+const Bank = @opaque_type "FMOD_STUDIO_BANK*";
+
+impl Bank as module = (
+	module:
+
+	const load = (system :: System, path :: &str) -> Bank => (
+		let path = C_String.from_str(path);
+		let mut bank :: Bank = @native "NULL"; 
+
+    	check(
+    		@native ''FMOD_Studio_System_LoadBankFile(
+            	\(system),
+            	\(path),
+            	FMOD_STUDIO_LOAD_BANK_NORMAL,
+            	\(&mut bank)
+        	)'',
+        	"Bank.load",
+    	);
+
+
+		C_String.drop(path);
+
+		bank
+	);
+);
+
 const run = (max_channels :: Int32, f :: System -> ()) => (
 	let system = System._create();
 	System._initialize(system, max_channels);
