@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.04.00">
+	<object class="AudioFile" id="{faa9d924-6e28-49b8-80ab-5b021a34c2c5}">
+		<property name="assetPath">
+			<value>meow.mp3</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>1</value>
+		</property>
+		<property name="length">
+			<value>0.52800000000000002</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{3ccdc15a-bfde-423e-bab3-4bde533fdaf4}</destination>
+		</relationship>
+	</object>
+</objects>

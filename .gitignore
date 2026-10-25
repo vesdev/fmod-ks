@@ -5,3 +5,8 @@
 *.exe
 *.dll
 *.so
+
+# fmod stuff
+assets/.cache
+assets/.user
+assets/.unsaved
