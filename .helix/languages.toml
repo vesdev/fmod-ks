@@ -1,0 +1,4 @@
+[[language]]
+name = "nim"
+file-types = ["ks"]
+indent = { tab-width = 4, unit = "\t" }

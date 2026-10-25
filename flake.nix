@@ -2,6 +2,7 @@
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
+    kast.url = "github:kast-lang/kast/bootstrap-ocaml";
   };
 
   outputs =
@@ -20,14 +21,22 @@
         { pkgs, system, ... }:
         let
 
+          kast = inputs.kast.packages.${system}.default;
+
           buildInputs = with pkgs; [
             stdenv.cc.cc.lib
           ];
 
           LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath buildInputs;
 
-          devPackages = [
-            pkgs.gcc
+          devPackages = with pkgs; [
+            gcc
+            just
+
+            (writeShellScriptBin "kast" ''
+              systemd-run --quiet --user --scope -p MemoryMax=5G \
+                rlwrap ${kast}/bin/kast "$@"
+            '')
           ];
 
         in
