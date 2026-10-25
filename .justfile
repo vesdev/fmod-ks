@@ -9,3 +9,10 @@ run example="init":
         -lfmodstudio -lfmod -lm -lbacktrace -pthread
 
     ./target/main
+
+check example="init":
+    mkdir -p target
+    kast compile --target c examples/{{example}}/main.ks > target/main.c
+    gcc -fsyntax-only target/main.c \
+        -I${KAST_PATH}/c-runtime/include \
+        -Ifmod/api/core/inc -Ifmod/api/studio/inc

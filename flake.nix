@@ -32,6 +32,7 @@
           devPackages = with pkgs; [
             gcc
             just
+            libbacktrace
 
             (writeShellScriptBin "kast" ''
               systemd-run --quiet --user --scope -p MemoryMax=5G \
@@ -45,6 +46,7 @@
             default = pkgs.mkShell {
               inherit LD_LIBRARY_PATH buildInputs;
               packages = devPackages;
+              KAST_PATH = "${kast}";
             };
           };
 
