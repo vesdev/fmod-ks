@@ -35,7 +35,7 @@
 
             (writeShellScriptBin "kast" ''
               systemd-run --quiet --user --scope -p MemoryMax=5G \
-                rlwrap ${kast}/bin/kast "$@"
+                ${rlwrap}/bin/rlwrap ${kast}/bin/kast "$@"
             '')
           ];
 
