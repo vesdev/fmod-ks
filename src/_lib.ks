@@ -65,18 +65,20 @@ impl Bank as module = (
 		let path = C_String.from_str(path);
 		let mut bank :: Bank = @native "NULL"; 
 
-    	check(
-    		@native ''FMOD_Studio_System_LoadBankFile(
-            	\(system),
-            	\(path),
-            	FMOD_STUDIO_LOAD_BANK_NORMAL,
-            	\(&mut bank)
-        	)'',
-        	"Bank.load",
-    	);
+		let result :: Result = @native ''FMOD_Studio_System_LoadBankFile(
+        	\(system),
+        	\(path),
+        	FMOD_STUDIO_LOAD_BANK_NORMAL,
+        	\(&mut bank)
+    	)'';
 
 
 		C_String.drop(path);
+
+    	check(
+    		result,
+        	"Bank.load",
+    	);
 
 		bank
 	);
