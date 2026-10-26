@@ -101,6 +101,44 @@ const stop = (instance :: EventInstance, fadeout :: Fadeout) => (
 	);
 );
 
+const set_parameter = (instance :: EventInstance, name :: &str, value :: Float32) => (
+	let name = C_String.from_str(name);
+	
+	let result :: Result = @native ''FMOD_Studio_EventInstance_SetParameterByName(
+		\(instance),
+		\(name),
+		\(value),
+		0
+	)'';
+
+	C_String.drop(name);
+
+	check(
+		result,
+		"event.set_parameter",
+	);
+);
+
+const set_label = (instance :: EventInstance, name :: &str, label :: &str) => (
+	let name = C_String.from_str(name);
+	let label = C_String.from_str(label);
+
+	let result :: Result = @native ''FMOD_Studio_EventInstance_SetParameterByNameWithLabel(
+		\(instance),
+		\(name), 
+		\(label),
+		0
+	)'';
+
+	C_String.drop(name);
+	C_String.drop(label);
+
+	check(
+		result,
+		"event.set_label",
+	);
+);
+
 const is_stopped = (instance :: EventInstance) -> Bool => with_return (
 	let mut state :: @opaque_type "FMOD_STUDIO_PLAYBACK_STATE" = @native "FMOD_STUDIO_PLAYBACK_STOPPED";
 	
