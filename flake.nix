@@ -23,11 +23,9 @@
 
           kast = inputs.kast.packages.${system}.default;
 
-          buildInputs = with pkgs; [
-            stdenv.cc.cc.lib
-            libpulseaudio
-            alsa-lib
-          ];
+          fmod-ks = pkgs.callPackage ./package.ks.nix { };
+
+          buildInputs = fmod-ks.runtimeLibs;
 
           LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath buildInputs;
 
@@ -44,10 +42,21 @@
 
         in
         {
+          packages = {
+            default = fmod-ks;
+            inherit fmod-ks;
+          };
+
           devShells = {
             default = pkgs.mkShell {
               inherit LD_LIBRARY_PATH buildInputs;
               packages = devPackages;
+
+              shellHook = ''
+                export FMOD_SDK="''${FMOD_SDK:-$PWD/fmod}"
+                export FMOD_CFLAGS="${pkgs.lib.concatStringsSep " " (fmod-ks.cflags { sdk = "$FMOD_SDK"; } )}"
+              '';
+
               KAST_PATH = "${kast}";
             };
           };
