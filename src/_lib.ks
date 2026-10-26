@@ -14,17 +14,19 @@ const includes = () => (
 	@native "#include <fmod_errors.h>";
 );
 
-const run = (options :: Options, f :: System -> ()) => (
+const init = (options :: Options) -> System => (
 	includes();
 
 	let handle = system._create();
 	system._initialize(handle, options);
 
-	f({
+	{
 		.handle,
 		.up = options.up,
 		.forward = options.forward,
-	});
+	}
+);
 
-	system._release(handle);
+const drop = (sys :: System) => (
+	system._release(sys.handle);
 );

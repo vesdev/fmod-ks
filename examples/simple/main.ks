@@ -7,20 +7,18 @@ let options =  {
 	.forward = { 0, 0, -1 },
 };
 
-fmod.run(
-	options,
-	(system) => (
-		let master = fmod.bank.load(system, "./assets/Build/Desktop/Master.bank");
-		let strings = fmod.bank.load(system, "./assets/Build/Desktop/Master.strings.bank");
+let sys = fmod.init(options);
+@defer fmod.drop(sys);
 
-		# you should generally use GUID's instead
-		fmod.event.play(system, "event:/meow");
+let master = fmod.bank.load(sys, "./assets/Build/Desktop/Master.bank");
+let strings = fmod.bank.load(sys, "./assets/Build/Desktop/Master.strings.bank");
 
-		while true do (
-			fmod.system.update(system);
+# you should generally use GUID's instead
+fmod.event.play(sys, "event:/meow");
 
-			# 16ms
-			std.thread.sleep_ns(16 * 1000000);
-		);
-	),
+while true do (
+	fmod.system.update(sys);
+
+	# 16ms
+	std.thread.sleep_ns(16 * 1000000);
 );
