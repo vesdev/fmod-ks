@@ -7,6 +7,11 @@ module:
 const EventDescription = @opaque_type "FMOD_STUDIO_EVENTDESCRIPTION*";
 const EventInstance = @opaque_type "FMOD_STUDIO_EVENTINSTANCE*";
 
+const Fadeout = newtype (
+	| :Allow
+	| :Immediate	
+);
+
 # id can be a path or GUID
 const get = (system :: System, id :: &str) -> EventDescription => (
 	let id = C_String.from_str(id);
@@ -73,6 +78,27 @@ const play = (system :: System, id :: &str) => (
 
 	start(instance);
 	release(instance);
+);
+
+const _stop_mode = (fadeout :: Fadeout) -> @opaque_type "FMOD_STUDIO_STOP_MODE" => (
+	match fadeout with (
+		| :Allow => @native "FMOD_STUDIO_STOP_ALLOWFADEOUT"
+		| :Immediate => @native "FMOD_STUDIO_STOP_IMMEDIATE"
+	)
+);
+
+const stop = (instance :: EventInstance, fadeout :: Fadeout) => (
+	let c_mode = _stop_mode(fadeout);
+
+	let result :: Result = @native ''FMOD_Studio_EventInstance_Stop(
+    	\(instance),
+		\(c_mode)
+	)'';
+
+	check(
+		result,
+    	"event.stop",
+	);
 );
 
 const is_stopped = (instance :: EventInstance) -> Bool => with_return (
