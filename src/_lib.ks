@@ -5,6 +5,7 @@ module:
 const system = import "./system.ks";
 const bank = import "./bank.ks";
 const event = import "./event.ks";
+const bus = import "./bus.ks";
 
 use system.System;
 use system.Options;

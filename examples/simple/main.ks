@@ -7,13 +7,20 @@ let options =  {
 	.forward = { 0, 0, -1 },
 };
 
+# -- init fmod system --
 let sys = fmod.init(options);
 @defer fmod.drop(sys);
 
+# -- loading banks --
 let master = fmod.bank.load(sys, "./assets/Build/Desktop/Master.bank");
 let strings = fmod.bank.load(sys, "./assets/Build/Desktop/Master.strings.bank");
 
-# you should generally use GUID's instead
+# -- setting bus volume --
+let bus = fmod.bus.get(sys, "bus:/");
+fmod.bus.set_volume(bus, 0.5);
+
+# -- playing events --
+# you should generally prefer GUID's instead
 fmod.event.play(sys, "event:/meow");
 
 while true do (
