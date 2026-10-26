@@ -11,7 +11,7 @@ const load = (system :: System, path :: &str) -> Bank => (
 	let mut bank :: Bank = @native "NULL"; 
 
 	let result :: Result = @native ''FMOD_Studio_System_LoadBankFile(
-    	\(system),
+    	\(system.handle),
     	\(path),
     	FMOD_STUDIO_LOAD_BANK_NORMAL,
     	\(&mut bank)

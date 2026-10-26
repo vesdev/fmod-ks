@@ -7,20 +7,24 @@ const bank = import "./bank.ks";
 const event = import "./event.ks";
 
 use system.System;
-
+use system.Options;
 
 const includes = () => (
 	@native "#include <fmod_studio.h>";
 	@native "#include <fmod_errors.h>";
 );
 
-const run = (max_channels :: Int32, f :: System -> ()) => (
+const run = (options :: Options, f :: System -> ()) => (
 	includes();
-	
-	let sys = system._create();
-	system._initialize(sys, max_channels);
 
-	f(sys);
-	
-	system._release(sys);	
+	let handle = system._create();
+	system._initialize(handle, options);
+
+	f({
+		.handle,
+		.up = options.up,
+		.forward = options.forward,
+	});
+
+	system._release(handle);
 );

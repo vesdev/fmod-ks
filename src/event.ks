@@ -18,7 +18,7 @@ const get = (system :: System, id :: &str) -> EventDescription => (
 	let mut desc :: EventDescription = @native "NULL"; 
 
 	let result :: Result = @native ''FMOD_Studio_System_GetEvent(
-    	\(system),
+    	\(system.handle),
     	\(id),
     	\(&mut desc)
 	)'';
@@ -136,6 +136,28 @@ const set_label = (instance :: EventInstance, name :: &str, label :: &str) => (
 	check(
 		result,
 		"event.set_label",
+	);
+);
+
+const set_position = (system :: System, instance :: EventInstance, position :: { Float32, Float32, Float32 }) => (
+	let { x, y, z } = position;
+	let { fx, fy, fz } = system.forward;
+	let { ux, uy, uz } = system.up;
+
+	let mut attributes :: @opaque_type "FMOD_3D_ATTRIBUTES" = @native ''(FMOD_3D_ATTRIBUTES) {
+		.position = { \(x), \(y), \(z) },
+		.forward = { \(fx), \(fy), \(fz) },
+		.up = { \(ux), \(uy), \(uz) },
+	}'';
+	
+	let result :: Result = @native ''FMOD_Studio_EventInstance_Set3DAttributes(
+		\(instance),
+		\(&mut attributes)
+	)'';
+	
+	check(
+		result,
+		"event.set_position",
 	);
 );
 
