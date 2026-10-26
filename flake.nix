@@ -25,6 +25,8 @@
 
           buildInputs = with pkgs; [
             stdenv.cc.cc.lib
+            libpulseaudio
+            alsa-lib
           ];
 
           LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath buildInputs;

@@ -1,4 +1,4 @@
-run example="init":
+run example="simple":
     mkdir -p target
     kast compile --target c examples/{{example}}/main.ks > target/main.c
     gcc target/main.c -o target/main \
@@ -10,7 +10,7 @@ run example="init":
 
     ./target/main
 
-check example="init":
+check example="simple":
     mkdir -p target
     kast compile --target c examples/{{example}}/main.ks > target/main.c
     gcc -fsyntax-only target/main.c \
