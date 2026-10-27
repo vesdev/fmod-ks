@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="logo.svg" alt="fmod-ks">
+</p>
+
 fmodstudio bindings for the kast language.
 
 Check examples for usage.
