@@ -1,6 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
+    nixpkgs-25-11.url = "nixpkgs/nixos-25.11";
     flake-parts.url = "github:hercules-ci/flake-parts";
     kast.url = "github:kast-lang/kast/bootstrap-ocaml";
   };
@@ -23,6 +24,9 @@
 
           kast = inputs.kast.packages.${system}.default;
 
+          pkgs-25-11 = import inputs.nixpkgs-25-11 { inherit system; };
+          emscripten = pkgs-25-11.emscripten;
+
           fmod-ks = pkgs.callPackage ./package.ks.nix { };
 
           buildInputs = fmod-ks.runtimeLibs;
@@ -33,6 +37,8 @@
             gcc
             just
             libbacktrace
+            caddy
+            emscripten
 
             (writeShellScriptBin "kast" ''
               systemd-run --quiet --user --scope -p MemoryMax=5G \
@@ -55,6 +61,10 @@
               shellHook = ''
                 export FMOD_SDK="''${FMOD_SDK:-$PWD/fmod}"
                 export FMOD_CFLAGS="${pkgs.lib.concatStringsSep " " (fmod-ks.cflags { sdk = "$FMOD_SDK"; } )}"
+
+                export FMOD_WEB_SDK="''${FMOD_WEB_SDK:-$PWD/fmod-web}"
+                export FMOD_EMCC_FLAGS="${pkgs.lib.concatStringsSep " " (fmod-ks.webCflags { sdk = "$FMOD_WEB_SDK"; logging = true; } )}"
+                export FMOD_EMCC_FLAGS_THREADS="${pkgs.lib.concatStringsSep " " (fmod-ks.webCflags { sdk = "$FMOD_WEB_SDK"; threads = true; logging = true; } )}"
               '';
 
               KAST_PATH = "${kast}";

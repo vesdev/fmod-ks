@@ -1,0 +1,10 @@
+http://localhost:8080 {
+	root * target/web
+	file_server
+
+	header {
+		Cross-Origin-Opener-Policy same-origin
+		Cross-Origin-Embedder-Policy require-corp
+		Cache-Control "public, max-age=0, must-revalidate"
+	}
+}
