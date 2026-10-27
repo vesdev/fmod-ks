@@ -104,6 +104,19 @@ const stop = (instance :: EventInstance, fadeout :: Fadeout) => (
 	);
 );
 
+const set_volume = (instance :: EventInstance, volume :: Float32) => (
+
+	let result :: Result = @native ''FMOD_Studio_EventInstance_SetVolume(
+		\(instance),
+		\(volume)
+	)'';
+
+	check(
+		result,
+		"event.set_volume",
+	);
+);
+
 const set_parameter = (instance :: EventInstance, name :: &str, value :: Float32) => (
 	let result :: Result = (
 		let name = C_String.from_str(name);
