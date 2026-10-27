@@ -56,7 +56,6 @@ stdenvNoCC.mkDerivation {
         "-sWASM=1"
         "-sALLOW_MEMORY_GROWTH=1"
         "-sEXPORTED_RUNTIME_METHODS=ccall,cwrap,setValue,getValue"
-        "-sASYNCIFY"
       ] ++ lib.optionals threads [
         "-pthread"
         "-sPTHREAD_POOL_SIZE=9"
