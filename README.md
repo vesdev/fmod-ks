@@ -1,5 +1,8 @@
 <p align="center">
-  <img src="logo.svg" alt="fmod-ks">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/logo-dark.svg">
+    <img src="assets/logo.svg" alt="fmod-ks">
+  </picture>
 </p>
 
 fmodstudio bindings for the kast language.
