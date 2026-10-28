@@ -376,11 +376,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1793167832,
-        "narHash": "sha256-8JjPJBorCBMheIHXYEKTpjemp6x0WBKQs9DaIinx6IU=",
+        "lastModified": 1793169262,
+        "narHash": "sha256-voBprqB76dFCkfPL3yJK2kLd+9t/7ZkJIaP8AXo8PmA=",
         "owner": "vesdev",
         "repo": "tcc-overlay",
-        "rev": "a762c4f3c5cc12ced8eb6e5f5469f89a8272319e",
+        "rev": "7d80aa0898c8c78536fb13881b29abd751644d30",
         "type": "github"
       },
       "original": {

@@ -41,7 +41,7 @@
 
           devPackages = with pkgs; [
             gcc
-            tcc-overlay
+            tcc
             just
             libbacktrace
             caddy
