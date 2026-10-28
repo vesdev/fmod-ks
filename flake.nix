@@ -4,6 +4,8 @@
     nixpkgs-25-11.url = "nixpkgs/nixos-25.11";
     flake-parts.url = "github:hercules-ci/flake-parts";
     kast.url = "github:kast-lang/kast/bootstrap-ocaml";
+
+    tcc-overlay.url = "github:vesdev/tcc-overlay";
   };
 
   outputs =
@@ -39,6 +41,7 @@
 
           devPackages = with pkgs; [
             gcc
+            tcc-overlay
             just
             libbacktrace
             caddy
@@ -53,6 +56,11 @@
 
         in
         {
+          _module.args.pkgs = import nixpkgs {
+            inherit system;
+            overlays = [ inputs.tcc-overlay.overlays.default ];
+          };
+
           packages = {
             default = fmod-ks;
             inherit fmod-ks get-fmod;
