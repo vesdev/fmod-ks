@@ -29,6 +29,10 @@
 
           fmod-ks = pkgs.callPackage ./package.ks.nix { };
 
+          get-fmod = pkgs.writers.writePython3Bin "get-fmod"
+            { libraries = ps: [ ps.requests ]; }
+            (builtins.readFile ./get_fmod.py);
+
           buildInputs = fmod-ks.runtimeLibs;
 
           LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath buildInputs;
@@ -39,6 +43,7 @@
             libbacktrace
             caddy
             emscripten
+            get-fmod
 
             (writeShellScriptBin "kast" ''
               systemd-run --quiet --user --scope -p MemoryMax=5G \
@@ -50,7 +55,7 @@
         {
           packages = {
             default = fmod-ks;
-            inherit fmod-ks;
+            inherit fmod-ks get-fmod;
           };
 
           devShells = {
@@ -59,10 +64,10 @@
               packages = devPackages;
 
               shellHook = ''
-                export FMOD_SDK="''${FMOD_SDK:-$PWD/fmod}"
+                export FMOD_SDK="''${FMOD_SDK:-$PWD/fmod/linux}"
                 export FMOD_CFLAGS="${pkgs.lib.concatStringsSep " " (fmod-ks.cflags { sdk = "$FMOD_SDK"; } )}"
 
-                export FMOD_WEB_SDK="''${FMOD_WEB_SDK:-$PWD/fmod-web}"
+                export FMOD_WEB_SDK="''${FMOD_WEB_SDK:-$PWD/fmod/html5}"
                 export FMOD_EMCC_FLAGS="${pkgs.lib.concatStringsSep " " (fmod-ks.webCflags { sdk = "$FMOD_WEB_SDK"; logging = true; } )}"
                 export FMOD_EMCC_FLAGS_THREADS="${pkgs.lib.concatStringsSep " " (fmod-ks.webCflags { sdk = "$FMOD_WEB_SDK"; threads = true; logging = true; } )}"
               '';

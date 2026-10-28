@@ -1,6 +1,5 @@
 /target/
 /fmod/
-/fmod-web/
 /result
 *.zip
 *.exe
