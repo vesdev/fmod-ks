@@ -31,15 +31,19 @@ stdenvNoCC.mkDerivation {
       alsa-lib
     ];
 
-    cflags = { sdk }: [
+    cflags = { sdk, release ? false }: [
       "-I${sdk}/api/core/inc"
       "-I${sdk}/api/studio/inc"
       "-L${sdk}/api/core/lib/x86_64"
       "-L${sdk}/api/studio/lib/x86_64"
-      "-Wl,-rpath,${sdk}/api/core/lib/x86_64:${sdk}/api/studio/lib/x86_64"
       "-lfmodstudio"
       "-lfmod"
-    ];
+    ] ++ (if release then [
+      "-Wl,-rpath,$ORIGIN"
+      "-Wl,--dynamic-linker=/lib64/ld-linux-x86-64.so.2"
+    ] else [
+      "-Wl,-rpath,${sdk}/api/core/lib/x86_64:${sdk}/api/studio/lib/x86_64"
+    ]);
 
     # see: https://fmod.com/docs/2.04/api/platforms-html5.html#using-fmod-with-cc
     webCflags = { sdk, threads ? false, logging ? false }:

@@ -1,4 +1,5 @@
 import getpass
+import glob
 import os
 import shutil
 import sys
@@ -53,6 +54,47 @@ elif platform == "ios":
 else:
     sys.exit(f"unknown platform: {platform}")
 
+keep_common = [
+    "api/core/inc/*.h",
+    "api/studio/inc/*.h",
+    "doc/LICENSE.TXT",
+    "doc/revision.txt",
+]
+
+keep = {
+    "linux": [
+        "api/core/lib/x86_64/libfmod.so*",
+        "api/core/lib/arm64/libfmod.so*",
+        "api/studio/lib/x86_64/libfmodstudio.so*",
+        "api/studio/lib/arm64/libfmodstudio.so*",
+    ],
+    "html5": [
+        "api/studio/lib/browser/*/c_cpp/fmodstudio*.a",
+    ],
+    "android": [
+        "api/core/lib/**",
+        "api/studio/lib/**",
+    ],
+}
+
+
+def trim(src, dst):
+    for pattern in keep_common + keep[platform]:
+        for rel in glob.glob(pattern, root_dir=src, recursive=True):
+            src_path = os.path.join(src, rel)
+            dst_path = os.path.join(dst, rel)
+
+            if os.path.isdir(src_path) and not os.path.islink(src_path):
+                continue
+
+            os.makedirs(os.path.dirname(dst_path), exist_ok=True)
+
+            if os.path.islink(src_path):
+                os.symlink(os.readlink(src_path), dst_path)
+            else:
+                shutil.copy2(src_path, dst_path)
+
+
 dest = os.path.join(fmod_dir, platform)
 download = os.path.join(fmod_dir, filename)
 
@@ -94,6 +136,6 @@ if extract:
     with tempfile.TemporaryDirectory() as tmp:
         shutil.unpack_archive(download, tmp)
         [root] = os.listdir(tmp)
-        shutil.move(os.path.join(tmp, root), dest)
+        trim(os.path.join(tmp, root), dest)
 
     os.remove(download)
