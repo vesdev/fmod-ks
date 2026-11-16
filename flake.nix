@@ -41,7 +41,7 @@
 
           devPackages = with pkgs; [
             gcc
-            tcc
+            tinycc
             just
             libbacktrace
             caddy
