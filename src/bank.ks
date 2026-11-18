@@ -16,12 +16,13 @@ const _is_emscripten = () -> Bool => @native ''
 
 # load whole bank into ram
 const _load_memory = (system :: System, path :: C_String, bank :: &mut Bank) -> Result => (
-	@native "#include <stdio.h>";
-	@native "#include <stdlib.h>";
-
-	@native ''({
+    @native "#include <stdio.h>";
+    @native "#include <stdlib.h>";
+    
+    @native ''({
 		FMOD_RESULT result = FMOD_ERR_FILE_NOTFOUND;
-		FILE *file = fopen(\(path), "rb");
+		FILE *file = fopen(\(
+    path), "rb");
 
 		if (file) {
 
@@ -37,12 +38,14 @@ const _load_memory = (system :: System, path :: C_String, bank :: &mut Bank) -> 
 				fread(buffer, 1, length, file);
 
 				result = FMOD_Studio_System_LoadBankMemory(
-					\(system.handle),
+					\(
+    system.handle),
 					buffer,
 					(int) length,
 					FMOD_STUDIO_LOAD_MEMORY,
 					FMOD_STUDIO_LOAD_BANK_NORMAL,
-					\(bank)
+					\(
+    bank)
 				);
 
 				free(buffer);
@@ -56,29 +59,30 @@ const _load_memory = (system :: System, path :: C_String, bank :: &mut Bank) -> 
 );
 
 const load = (system :: System, path :: &str) -> Bank => (
-	let mut bank :: Bank = @native "NULL";
-
-	let result :: Result = (
-		let path = C_String.from_str(path);
-		@defer C_String.drop(path);
-
-		if _is_emscripten() then (
-			_load_memory(system, path, &mut bank)
-		) else (
-			# load from filename doesnt work on web
-			@native ''FMOD_Studio_System_LoadBankFile(
+    let mut bank :: Bank = @native "NULL";
+    
+    let result :: Result = (
+        let path = C_String.from_str(path);
+        @defer C_String.drop(path);
+        
+        if _is_emscripten() then (
+            _load_memory(system, path, &mut bank)
+        ) else (
+            # load from filename doesnt work on web
+            @native ''FMOD_Studio_System_LoadBankFile(
 				\(system.handle),
 				\(path),
 				FMOD_STUDIO_LOAD_BANK_NORMAL,
-				\(&mut bank)
+				\(
+            &mut bank)
 			)''
-		)
-	);
-
-	check(
-		result,
-		"bank.load",
-	);
-
-	bank
+        )
+    );
+    
+    check(
+        result,
+        "bank.load",
+    );
+    
+    bank
 );
