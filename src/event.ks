@@ -22,10 +22,10 @@ const get = (system :: System, id :: &str) -> EventDescription => (
         @defer C_String.drop(id);
         
         @native ''FMOD_Studio_System_GetEvent(
-	    	\(system.handle),
-	    	\(id),
-	    	\(&mut desc)
-		)''
+    	    	\(system.handle),
+    	    	\(id),
+    	    	\(&mut desc)
+    		)''
     );
     
     check(
@@ -40,9 +40,9 @@ const create_instance = (description :: EventDescription) -> EventInstance => (
     let mut instance :: EventInstance = @native "NULL";
     
     let result :: Result = @native ''FMOD_Studio_EventDescription_CreateInstance(
-    	\(description),
-    	\(&mut instance)
-	)'';
+        \(description),
+        \(&mut instance)
+    )'';
     
     check(
         result,
@@ -54,8 +54,8 @@ const create_instance = (description :: EventDescription) -> EventInstance => (
 
 const start = (instance :: EventInstance) => (
     let result :: Result = @native ''FMOD_Studio_EventInstance_Start(
-    	\(instance)
-	)'';
+        \(instance)
+    )'';
     
     check(
         result,
@@ -65,8 +65,8 @@ const start = (instance :: EventInstance) => (
 
 const release = (instance :: EventInstance) => (
     let result :: Result = @native ''FMOD_Studio_EventInstance_Release(
-    	\(instance)
-	)'';
+        \(instance)
+    )'';
     
     check(
         result,
@@ -93,9 +93,9 @@ const stop = (instance :: EventInstance, fadeout :: Fadeout) => (
     let c_mode = _stop_mode(fadeout);
     
     let result :: Result = @native ''FMOD_Studio_EventInstance_Stop(
-    	\(instance),
-		\(c_mode)
-	)'';
+        \(instance),
+        \(c_mode)
+    )'';
     
     check(
         result,
@@ -106,9 +106,9 @@ const stop = (instance :: EventInstance, fadeout :: Fadeout) => (
 const set_volume = (instance :: EventInstance, volume :: Float32) => (
     
     let result :: Result = @native ''FMOD_Studio_EventInstance_SetVolume(
-		\(instance),
-		\(volume)
-	)'';
+        \(instance),
+        \(volume)
+    )'';
     
     check(
         result,
@@ -122,11 +122,11 @@ const set_parameter = (instance :: EventInstance, name :: &str, value :: Float32
         @defer C_String.drop(name);
         
         @native ''FMOD_Studio_EventInstance_SetParameterByName(
-			\(instance),
-			\(name),
-			\(value),
-			0
-		)''
+    		    \(instance),
+    		    \(name),
+    		    \(value),
+    		    0
+        )''
     );
     
     check(
@@ -143,11 +143,11 @@ const set_label = (instance :: EventInstance, name :: &str, label :: &str) => (
         @defer C_String.drop(label);
         
         @native ''FMOD_Studio_EventInstance_SetParameterByNameWithLabel(
-			\(instance),
-			\(name), 
-			\(label),
-			0
-		)''
+            \(instance),
+		        \(name), 
+		        \(label),
+		        0
+    		)''
     );
     
     check(
@@ -162,15 +162,15 @@ const set_position = (system :: System, instance :: EventInstance, position :: {
     let { ux, uy, uz } = system.up;
     
     let mut attributes :: @opaque_type "FMOD_3D_ATTRIBUTES" = @native ''(FMOD_3D_ATTRIBUTES) {
-		.position = { \(x), \(y), \(z) },
-		.forward = { \(fx), \(fy), \(fz) },
-		.up = { \(ux), \(uy), \(uz) },
-	}'';
+        .position = { \(x), \(y), \(z) },
+        .forward = { \(fx), \(fy), \(fz) },
+        .up = { \(ux), \(uy), \(uz) },
+    }'';
     
     let result :: Result = @native ''FMOD_Studio_EventInstance_Set3DAttributes(
-		\(instance),
-		\(&mut attributes)
-	)'';
+		    \(instance),
+		    \(&mut attributes)
+    )'';
     
     check(
         result,
@@ -182,9 +182,9 @@ const is_stopped = (instance :: EventInstance) -> Bool => with_return (
     let mut state :: @opaque_type "FMOD_STUDIO_PLAYBACK_STATE" = @native "FMOD_STUDIO_PLAYBACK_STOPPED";
     
     let result :: Result = @native ''FMOD_Studio_EventInstance_GetPlaybackState(
-    	\(instance),
-    	\(&mut state)
-	)'';
+        \(instance),
+        \(&mut state)
+    )'';
     
     if @native "\(result) == FMOD_ERR_INVALID_HANDLE" then (
         return true;

@@ -54,13 +54,12 @@ const _initialize = (handle :: Handle, options :: Options) => (
     
     check(
         @native ''FMOD_Studio_System_Initialize(
-	    	\(handle),
-	    	\(options.max_channels),
-	    	FMOD_STUDIO_INIT_NORMAL,
-	    	\(
-        flags),
-	    	NULL
-		)'',
+    	    	\(handle),
+    	    	\(options.max_channels),
+    	    	FMOD_STUDIO_INIT_NORMAL,
+    	    	\(flags),
+    	    	NULL
+    		)'',
         "system.initialize",
     );
 );
@@ -91,12 +90,11 @@ const set_listener = (
 	}'';
     
     let result :: Result = @native ''FMOD_Studio_System_SetListenerAttributes(
-		\(system.handle),
-		0,
-		\(
-    &mut attributes),
-		NULL
-	)'';
+    		\(system.handle),
+    		0,
+    		\(&mut attributes),
+    		NULL
+    )'';
     
     check(
         result,

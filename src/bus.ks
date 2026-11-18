@@ -17,10 +17,10 @@ const get = (system :: System, id :: &str) -> Bus => (
         @defer C_String.drop(id);
         
         @native ''FMOD_Studio_System_GetBus(
-			\(system.handle),
-			\(id),
-			\(&mut bus)
-		)''
+		        \(system.handle),
+		        \(id),
+		        \(&mut bus)
+    		)''
     );
     
     check(
@@ -33,9 +33,9 @@ const get = (system :: System, id :: &str) -> Bus => (
 
 const set_volume = (bus :: Bus, volume :: Float32) => (
     let result :: Result = @native ''FMOD_Studio_Bus_SetVolume(
-		\(bus),
-		\(volume)
-	)'';
+		    \(bus),
+		    \(volume)
+    )'';
     
     check(
         result,
@@ -47,10 +47,10 @@ const get_volume = (bus :: Bus) -> Float32 => (
     let mut volume :: Float32 = 0;
     
     let result :: Result = @native ''FMOD_Studio_Bus_GetVolume(
-		\(bus),
-		\(&mut volume),
-		NULL
-	)'';
+		    \(bus),
+		    \(&mut volume),
+		    NULL
+    )'';
     
     check(
         result,
@@ -62,9 +62,9 @@ const get_volume = (bus :: Bus) -> Float32 => (
 
 const set_paused = (bus :: Bus, paused :: Bool) => (
     let result :: Result = @native ''FMOD_Studio_Bus_SetPaused(
-		\(bus),
-		\(paused) ? 1 : 0
-	)'';
+	      \(bus),
+	      \(paused) ? 1 : 0
+    )'';
     
     check(
         result,
@@ -75,9 +75,9 @@ const set_paused = (bus :: Bus, paused :: Bool) => (
 const set_mute = (bus :: Bus, mute :: Bool) => (
     
     let result :: Result = @native ''FMOD_Studio_Bus_SetMute(
-		\(bus),
-		\(mute) ? 1 : 0
-	)'';
+		    \(bus),
+		    \(mute) ? 1 : 0
+    )'';
     
     check(
         result,
@@ -89,9 +89,9 @@ const stop_all_events = (bus :: Bus, fadeout :: Fadeout) => (
     let c_mode = _stop_mode(fadeout);
     
     let result :: Result = @native ''FMOD_Studio_Bus_StopAllEvents(
-		\(bus),
-		\(c_mode)
-	)'';
+		    \(bus),
+		    \(c_mode)
+    )'';
     
     check(
         result,

@@ -21,8 +21,7 @@ const _load_memory = (system :: System, path :: C_String, bank :: &mut Bank) -> 
     
     @native ''({
 		FMOD_RESULT result = FMOD_ERR_FILE_NOTFOUND;
-		FILE *file = fopen(\(
-    path), "rb");
+		FILE *file = fopen(\(path), "rb");
 
 		if (file) {
 
@@ -38,14 +37,12 @@ const _load_memory = (system :: System, path :: C_String, bank :: &mut Bank) -> 
 				fread(buffer, 1, length, file);
 
 				result = FMOD_Studio_System_LoadBankMemory(
-					\(
-    system.handle),
+					\(system.handle),
 					buffer,
 					(int) length,
 					FMOD_STUDIO_LOAD_MEMORY,
 					FMOD_STUDIO_LOAD_BANK_NORMAL,
-					\(
-    bank)
+					\(bank)
 				);
 
 				free(buffer);
@@ -70,12 +67,11 @@ const load = (system :: System, path :: &str) -> Bank => (
         ) else (
             # load from filename doesnt work on web
             @native ''FMOD_Studio_System_LoadBankFile(
-				\(system.handle),
-				\(path),
-				FMOD_STUDIO_LOAD_BANK_NORMAL,
-				\(
-            &mut bank)
-			)''
+              \(system.handle),
+              \(path),
+              FMOD_STUDIO_LOAD_BANK_NORMAL,
+      		    \(&mut bank)
+      		  )''
         )
     );
     
