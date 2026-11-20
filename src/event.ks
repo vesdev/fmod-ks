@@ -22,10 +22,10 @@ const get = (system :: System, id :: &str) -> EventDescription => (
         @defer C_String.drop(id);
         
         @native ''FMOD_Studio_System_GetEvent(
-    	    	\(system.handle),
-    	    	\(id),
-    	    	\(&mut desc)
-    		)''
+	    	\(system.handle),
+	    	\(id),
+	    	\(&mut desc)
+		)''
     );
     
     check(
@@ -122,10 +122,10 @@ const set_parameter = (instance :: EventInstance, name :: &str, value :: Float32
         @defer C_String.drop(name);
         
         @native ''FMOD_Studio_EventInstance_SetParameterByName(
-    		    \(instance),
-    		    \(name),
-    		    \(value),
-    		    0
+    		\(instance),
+    		\(name),
+    		\(value),
+    		0
         )''
     );
     
@@ -144,10 +144,10 @@ const set_label = (instance :: EventInstance, name :: &str, label :: &str) => (
         
         @native ''FMOD_Studio_EventInstance_SetParameterByNameWithLabel(
             \(instance),
-		        \(name), 
-		        \(label),
-		        0
-    		)''
+		    \(name),
+		    \(label),
+		    0
+    	)''
     );
     
     check(
@@ -168,8 +168,8 @@ const set_position = (system :: System, instance :: EventInstance, position :: {
     }'';
     
     let result :: Result = @native ''FMOD_Studio_EventInstance_Set3DAttributes(
-		    \(instance),
-		    \(&mut attributes)
+		\(instance),
+		\(&mut attributes)
     )'';
     
     check(

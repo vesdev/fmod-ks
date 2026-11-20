@@ -67,11 +67,11 @@ const load = (system :: System, path :: &str) -> Bank => (
         ) else (
             # load from filename doesnt work on web
             @native ''FMOD_Studio_System_LoadBankFile(
-              \(system.handle),
-              \(path),
-              FMOD_STUDIO_LOAD_BANK_NORMAL,
+                \(system.handle),
+                \(path),
+                FMOD_STUDIO_LOAD_BANK_NORMAL,
       		    \(&mut bank)
-      		  )''
+      		)''
         )
     );
     
